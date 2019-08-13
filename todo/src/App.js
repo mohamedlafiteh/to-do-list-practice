@@ -27,11 +27,13 @@ class App extends React.Component {
     const deleteTodo = {
       method: "DELETE"
     };
-    fetch("http://localhost:3005/todo/${id}", deleteTodo).then(res => {
-      this.setState({
-        todos: [res]
+    fetch("http://localhost:3005/todo/${id}", deleteTodo)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          todos: data
+        });
       });
-    });
     // this.setState({
     //   todos: [...this.state.todos.filter(todo => todo.id !== id)]
     // });
