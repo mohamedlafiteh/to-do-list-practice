@@ -2,35 +2,14 @@ import React from "react";
 import ToDo from "./Components/ToDo";
 import Header from "./Header";
 import AddToDo from "./AddToDo";
-import uuid from "uuid";
+
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import About from "./page/About";
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      todos: [
-        {
-          id: uuid.v4(),
-          title: "study React",
-          completed: false
-        },
-        {
-          id: uuid.v4(),
-          title: "play football",
-          completed: false
-        },
-        {
-          id: uuid.v4(),
-          title: "dinner with friends",
-          completed: false
-        },
-        {
-          id: uuid.v4(),
-          title: "travel to Italy",
-          completed: false
-        }
-      ]
+      todos: []
     };
   }
   //completed
@@ -45,13 +24,22 @@ class App extends React.Component {
     });
   };
   handleDelete = id => {
-    this.setState({
-      todos: [...this.state.todos.filter(todo => todo.id !== id)]
+    const deleteTodo = {
+      method: "DELETE"
+    };
+    fetch("http://localhost:3005/todo/${id}", deleteTodo).then(res => {
+      this.setState({
+        todos: [res]
+      });
     });
+    // this.setState({
+    //   todos: [...this.state.todos.filter(todo => todo.id !== id)]
+    // });
   };
+
   AddTitle = title => {
     const newTodo = {
-      id: uuid.v4(),
+      id: 0,
       title: title,
       completed: false
     };
@@ -59,6 +47,16 @@ class App extends React.Component {
       todos: [...this.state.todos, newTodo]
     });
   };
+  componentDidMount() {
+    fetch("http://localhost:3005/todo")
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          todos: data
+        });
+      });
+  }
+
   render() {
     return (
       <Router>
