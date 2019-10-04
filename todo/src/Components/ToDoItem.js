@@ -9,7 +9,6 @@ export class ToDoItem extends Component {
       textDecoration: this.props.todos.completed ? "line-through" : "none"
     };
   };
-
   render() {
     const { id, title } = this.props.todos;
     return (

@@ -27,30 +27,28 @@ class App extends React.Component {
     const deleteTodo = {
       method: "DELETE"
     };
-    fetch("http://localhost:3005/todo/${id}", deleteTodo)
+    fetch(`http://localhost:3004/todo/${id}`, deleteTodo)
       .then(res => res.json())
-      .then(data => {
+      .then(response => {
+        console.log("res", response);
         this.setState({
-          todos: data
+          todos: this.state.todos.filter(todo => todo.id !== id)
         });
-      });
+      })
+      .catch(e => alert("Something went worng!"));
     // this.setState({
     //   todos: [...this.state.todos.filter(todo => todo.id !== id)]
     // });
   };
 
   AddTitle = title => {
-    const newTodo = {
-      id: 0,
-      title: title,
-      completed: false
-    };
+    const newTodo = { id: 0, title: title, completed: false };
     this.setState({
       todos: [...this.state.todos, newTodo]
     });
   };
   componentDidMount() {
-    fetch("http://localhost:3005/todo")
+    fetch("http://localhost:3004/todos")
       .then(res => res.json())
       .then(data => {
         this.setState({
